@@ -1,0 +1,58 @@
+[gd_scene load_steps=8 format=3 uid="uid://dwnclewi1aen2"]
+
+[ext_resource type="Script" path="res://plane_controls.gd" id="1_t0eka"]
+[ext_resource type="Texture2D" uid="uid://d1qq04pqo8wnn" path="res://playerplanesprite1.png" id="2_4k7h5"]
+[ext_resource type="Texture2D" uid="uid://8ylutcnsymvg" path="res://playerplanesprite2.png" id="3_hyqw7"]
+[ext_resource type="Texture2D" uid="uid://duaatabgm6kfv" path="res://playerplanesprite3.png" id="4_j3glo"]
+[ext_resource type="Script" path="res://rock.gd" id="5_f01od"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ojrjh"]
+radius = 39.2046
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_esx6h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_4k7h5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_hyqw7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_j3glo")
+}],
+"loop": true,
+"name": &"flap",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_4k7h5")
+}],
+"loop": true,
+"name": &"glide",
+"speed": 5.0
+}]
+
+[node name="spinnyplane" type="Node2D"]
+
+[node name="plane" type="RigidBody2D" parent="."]
+position = Vector2(628, 284)
+script = ExtResource("1_t0eka")
+
+[node name="plane_collision_shape" type="CollisionShape2D" parent="plane"]
+shape = SubResource("CircleShape2D_ojrjh")
+
+[node name="plane_animated_sprite" type="AnimatedSprite2D" parent="plane"]
+sprite_frames = SubResource("SpriteFrames_esx6h")
+animation = &"glide"
+
+[node name="rock" type="Area2D" parent="."]
+script = ExtResource("5_f01od")
+
+[node name="rock_sprite" type="Sprite2D" parent="rock"]
+
+[node name="rock_collision_shape" type="CollisionShape2D" parent="rock"]
+
+[connection signal="animation_finished" from="plane/plane_animated_sprite" to="plane" method="_on_plane_animated_sprite_animation_finished"]
+[connection signal="area_entered" from="rock" to="rock" method="_on_area_entered"]
