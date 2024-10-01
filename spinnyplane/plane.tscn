@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://bjhmvcyfyhp6q"]
+
+[ext_resource type="Script" path="res://plane_controls.gd" id="1_y8d2j"]
+[ext_resource type="Texture2D" uid="uid://d1qq04pqo8wnn" path="res://playerplanesprite1.png" id="2_0wv7a"]
+[ext_resource type="Texture2D" uid="uid://8ylutcnsymvg" path="res://playerplanesprite2.png" id="3_aweqd"]
+[ext_resource type="Texture2D" uid="uid://duaatabgm6kfv" path="res://playerplanesprite3.png" id="4_abmsf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ojrjh"]
+radius = 39.2046
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_esx6h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_0wv7a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_aweqd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_abmsf")
+}],
+"loop": true,
+"name": &"flap",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_0wv7a")
+}],
+"loop": true,
+"name": &"glide",
+"speed": 5.0
+}]
+
+[node name="plane" type="RigidBody2D"]
+position = Vector2(83, 319)
+script = ExtResource("1_y8d2j")
+
+[node name="plane_collision_shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ojrjh")
+
+[node name="plane_animated_sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_esx6h")
+animation = &"glide"
+
+[connection signal="animation_finished" from="plane_animated_sprite" to="." method="_on_plane_animated_sprite_animation_finished"]
